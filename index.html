@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bastidores dos Painéis</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --paper: #F5F6F0;
+    --paper-raised: #FFFFFF;
+    --ink: #201F1A;
+    --ink-soft: #56534A;
+    --ink-faint: #8B8778;
+    --line: #DEDACB;
+    --line-soft: #EAE7DA;
+    --accent: #C4711F;
+    --accent-soft: #F1DFC4;
+    --accent-ink: #7A4614;
+    --teal: #3A6B62;
+    --teal-soft: #DCE9E5;
+    --teal-ink: #244B44;
+    --shadow: 0 1px 2px rgba(32,31,26,0.04), 0 8px 24px -12px rgba(32,31,26,0.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #17160F;
+      --paper-raised: #221F16;
+      --ink: #EDE9DC;
+      --ink-soft: #B6B0A0;
+      --ink-faint: #837E6E;
+      --line: #38341F;
+      --line-soft: #2A2718;
+      --accent: #E1943F;
+      --accent-soft: #3C2A12;
+      --accent-ink: #F4C68B;
+      --teal: #6DAA9E;
+      --teal-soft: #1D3430;
+      --teal-ink: #A9D6CB;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 28px -14px rgba(0,0,0,0.55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #17160F;
+    --paper-raised: #221F16;
+    --ink: #EDE9DC;
+    --ink-soft: #B6B0A0;
+    --ink-faint: #837E6E;
+    --line: #38341F;
+    --line-soft: #2A2718;
+    --accent: #E1943F;
+    --accent-soft: #3C2A12;
+    --accent-ink: #F4C68B;
+    --teal: #6DAA9E;
+    --teal-soft: #1D3430;
+    --teal-ink: #A9D6CB;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 28px -14px rgba(0,0,0,0.55);
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Public Sans", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.55;
+  }
+  .wrap{ max-width:840px; margin:0 auto; padding:56px 24px 96px; }
+
+  .eyebrow{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--accent-ink); background:var(--accent-soft);
+    display:inline-block; padding:5px 11px; border-radius:5px;
+    margin-bottom:18px;
+  }
+  h1{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:700; font-size:clamp(32px, 5vw, 46px);
+    line-height:1.08; margin:0 0 14px; letter-spacing:-0.01em;
+    text-wrap:balance;
+  }
+  .lede{
+    font-size:18px; color:var(--ink-soft); max-width:62ch;
+    margin:0 0 8px; font-weight:400;
+  }
+  .meta-line{
+    font-size:13px; color:var(--ink-faint); margin:22px 0 0;
+    display:flex; gap:18px; flex-wrap:wrap;
+  }
+  .meta-line b{ color:var(--ink-soft); font-weight:600; }
+
+  hr.divider{
+    border:none; border-top:1px solid var(--line); margin:44px 0;
+  }
+
+  h2.section-title{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600; font-style:italic; font-size:26px;
+    margin:0 0 6px; color:var(--ink);
+  }
+  .section-sub{
+    color:var(--ink-soft); font-size:15px; margin:0 0 32px; max-width:60ch;
+  }
+
+  /* ---- Pipeline timeline ---- */
+  .pipeline{ position:relative; padding-left:52px; }
+  .pipeline::before{
+    content:""; position:absolute; left:19px; top:6px; bottom:6px;
+    width:2px; background:var(--line);
+  }
+  .stage{ position:relative; padding-bottom:36px; }
+  .stage:last-child{ padding-bottom:0; }
+  .stage-num{
+    position:absolute; left:-52px; top:0; width:40px; height:40px;
+    border-radius:50%; background:var(--paper-raised); border:2px solid var(--accent);
+    color:var(--accent-ink); font-family:"IBM Plex Mono", monospace; font-weight:600; font-size:15px;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:var(--shadow);
+  }
+  .stage-card{
+    background:var(--paper-raised); border:1px solid var(--line-soft); border-radius:12px;
+    padding:18px 20px; box-shadow:var(--shadow);
+  }
+  .stage-top{
+    display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:6px;
+  }
+  .stage-tool{
+    font-family:"IBM Plex Mono", monospace; font-weight:600; font-size:14.5px;
+    color:var(--teal-ink); background:var(--teal-soft);
+    padding:3px 9px; border-radius:5px; letter-spacing:-0.01em;
+  }
+  .stage-head{
+    font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:18px; color:var(--ink);
+  }
+  .stage-body{ color:var(--ink-soft); font-size:15px; margin:6px 0 0; }
+  .stage-body code{
+    font-family:"IBM Plex Mono", monospace; font-size:13px; background:var(--line-soft);
+    padding:1px 6px; border-radius:4px; color:var(--ink);
+  }
+
+  /* ---- Painéis grid ---- */
+  .paineis{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:16px;
+    margin-top:8px;
+  }
+  .painel-card{
+    background:var(--paper-raised); border:1px solid var(--line-soft); border-radius:12px;
+    padding:20px; box-shadow:var(--shadow);
+  }
+  .painel-card h3{
+    font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:17px; margin:0 0 8px;
+  }
+  .painel-card p{ color:var(--ink-soft); font-size:14px; margin:0 0 12px; }
+  .painel-link{
+    font-family:"IBM Plex Mono", monospace; font-size:12.5px; color:var(--teal-ink);
+    word-break:break-all;
+  }
+
+  /* ---- Footer ---- */
+  .footer{
+    margin-top:52px; padding-top:28px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap;
+  }
+  .footer-who{ font-size:14px; color:var(--ink-soft); max-width:46ch; }
+  .footer-who b{ color:var(--ink); font-weight:700; }
+  .footer-note{
+    font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--ink-faint);
+    text-align:right;
+  }
+
+  @media (max-width:520px){
+    .wrap{ padding:40px 18px 72px; }
+    .pipeline{ padding-left:44px; }
+    .stage-num{ left:-44px; width:34px; height:34px; font-size:13px; }
+    .footer{ flex-direction:column; }
+    .footer-note{ text-align:left; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="eyebrow">T&amp;T Alimentos · Como os painéis funcionam</span>
+  <h1>Dos relatórios do WinThor até o link no seu WhatsApp</h1>
+  <p class="lede">
+    Um guia rápido, sem jargão técnico, com o nome de cada ferramenta envolvida —
+    caso você queira saber o que é o quê, ou repassar pra sua equipe.
+  </p>
+  <div class="meta-line">
+    <span><b>Painéis ativos:</b> 4 Pilares · Departamentos · Clientes em Queda</span>
+    <span><b>Atualização:</b> conforme a rotina do Edmar, geralmente diária</span>
+  </div>
+
+  <hr class="divider">
+
+  <h2 class="section-title">O caminho dos dados</h2>
+  <p class="section-sub">
+    São 8 etapas, sempre na mesma ordem, do relatório bruto até o link que chega no celular.
+  </p>
+
+  <div class="pipeline">
+
+    <div class="stage">
+      <div class="stage-num">1</div>
+      <div class="stage-card">
+        <div class="stage-top">
+          <span class="stage-head">Exportação dos relatórios</span>
+          <span class="stage-tool">WinThor</span>
+        </div>
+        <p class="stage-body">
+          O sistema de gestão da empresa. É de lá que saem os relatórios de vendas por RCA —
+          positivação, margem, mix, faturamento e as 10 categorias de produto (Bacon, Bovino,
+          Batata, Suíno, Calabresa, Pães, Frescais, Saborizadas, Lácteos, Thermo).
+        </p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-num">2</div>
+      <div class="stage-card">
+        <div class="stage-top">
+          <span class="stage-head">Planilhas mestras</span>
+          <span class="stage-tool">Microsoft Excel</span>
+        </div>
+        <p class="stage-body">
+          Os relatórios exportados alimentam duas planilhas centrais, onde ficam as metas de
+          cada RCA e supervisor: <code>SOMA NAO SALVA ENCIMA.xlsx</code> (painel 4 Pilares) e
+          <code>RESULTADO.xlsx</code> (painel Departamentos).
+        </p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-num">3</div>
+      <div class="stage-card">
+        <div class="stage-top">
+          <span class="stage-head">Leitura e cálculo dos dados</span>
+          <span class="stage-tool">Python</span>
+        </div>
+        <p class="stage-body">
+          Um programa em Python abre essas planilhas sozinho, lê linha por linha e calcula
+          quem bateu meta, quem não bateu, e a tendência de fechamento do mês — sem precisar
+          copiar e colar nada manualmente.
+        </p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-num">4</div>
+      <div class="stage-card">
+        <div class="stage-top">
+          <span class="stage-head">Montagem visual do painel</span>
+          <span class="stage-tool">Python</span>
+        </div>
+        <p class="stage-body">
+          Um segundo programa Python pega os números já calculados e monta as páginas
+          bonitas — os cards coloridos, barras e gráficos — que aparecem no navegador.
+        </p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-num">5</div>
+      <div class="stage-card">
+        <div class="stage-top">
+          <span class="stage-head">Orquestração e manutenção</span>
+          <span class="stage-tool">Claude Code</span>
+        </div>
+        <p class="stage-body">
+          Um assistente de inteligência artificial que roda esses dois programas Python,
+          ajusta o código quando o formato de alguma planilha muda, e publica o resultado
+          nos links — sem precisar de um programador contratado.
+        </p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-num">6</div>
+      <div class="stage-card">
+        <div class="stage-top">
+          <span class="stage-head">Hospedagem pública</span>
+          <span class="stage-tool">GitHub Pages</span>
+        </div>
+        <p class="stage-body">
+          Um serviço gratuito que deixa as páginas no ar 24 horas, em endereços fixos
+          (<code>edmarr123.github.io/…</code>). É por isso que o link abre em qualquer
+          celular ou computador, sem senha e sem instalar aplicativo.
+        </p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-num">7</div>
+      <div class="stage-card">
+        <div class="stage-top">
+          <span class="stage-head">Envio automático</span>
+          <span class="stage-tool">WhatsApp Web</span>
+        </div>
+        <p class="stage-body">
+          O link atualizado (ou um print do resumo do dia) é enviado sozinho para os grupos
+          e contatos certos, sem o Edmar precisar abrir o celular.
+        </p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-num">8</div>
+      <div class="stage-card">
+        <div class="stage-top">
+          <span class="stage-head">O relógio de tudo isso</span>
+          <span class="stage-tool">Agendador de Tarefas do Windows</span>
+        </div>
+        <p class="stage-body">
+          A ferramenta nativa do Windows que dispara essa sequência inteira nos horários
+          programados — de madrugada ou no fim do expediente, por exemplo — sem ninguém
+          precisar estar na frente do computador.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <h2 class="section-title">Os 3 painéis publicados</h2>
+  <p class="section-sub">O mesmo processo acima gera três painéis diferentes, cada um com um foco.</p>
+
+  <div class="paineis">
+    <div class="painel-card">
+      <h3>4 Pilares</h3>
+      <p>Financeiro, margem, mix e positivação por RCA e por supervisor, com tendência de fechamento do mês.</p>
+      <div class="painel-link">edmarr123.github.io/painel-4-pilares</div>
+    </div>
+    <div class="painel-card">
+      <h3>Departamentos</h3>
+      <p>As 10 categorias de produto (Bacon, Bovino, Thermo…) com meta e realizado por RCA e por supervisor.</p>
+      <div class="painel-link">edmarr123.github.io/painel-departamentos</div>
+    </div>
+    <div class="painel-card">
+      <h3>Clientes em Queda</h3>
+      <p>Compara os últimos 3 meses com os 3 anteriores e aponta clientes caindo em pedidos, mix ou faturamento.</p>
+      <div class="painel-link">edmarr123.github.io/clientes-em-queda</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-who">
+      <b>Quem mantém isso funcionando:</b> Edmar, com apoio do Claude Code para programar,
+      corrigir e publicar as atualizações. Nenhuma etapa depende de um programador de plantão.
+    </div>
+    <div class="footer-note">documento de referência interna</div>
+  </div>
+
+</div>
+</body>
+</html>
